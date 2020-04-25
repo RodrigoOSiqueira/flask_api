@@ -1,17 +1,24 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS post;
 
-CREATE TABLE user (
+CREATE TABLE Curso (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  nome TEXT UNIQUE NOT NULL,
+  descricao  TEXT NOT NULL
 );
 
-CREATE TABLE post (
+CREATE TABLE Turma (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  author_id INTEGER NOT NULL,
-  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  title TEXT NOT NULL,
-  body TEXT NOT NULL,
-  FOREIGN KEY (author_id) REFERENCES user (id)
+  curso_id INTEGER NOT NULL,
+  nome TEXT NOT NULL,
+  quantidade_alunos  INTEGER,
+  codigo_turma  TEXT NOT NULL,
+  FOREIGN KEY (curso_id) REFERENCES Curso (id)
+);
+
+CREATE TABLE Matricula (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  turma_id INTEGER NOT NULL,
+  nome_aluno TEXT NOT NULL,
+  FOREIGN KEY (turma_id) REFERENCES Turma (id)
 );
