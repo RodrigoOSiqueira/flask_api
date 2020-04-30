@@ -11,8 +11,6 @@ CREATE TABLE Turma (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   curso_id INTEGER NOT NULL,
   nome TEXT NOT NULL,
-  quantidade_alunos  INTEGER,
-  codigo_turma  TEXT NOT NULL,
   FOREIGN KEY (curso_id) REFERENCES Curso (id)
 );
 

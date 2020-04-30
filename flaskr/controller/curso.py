@@ -35,16 +35,18 @@ class Curso:
 
     def cria_curso(self, dados_curso: dict):
         db = get_db()
+        nome_curso = dados_curso.get('nome')
+        descricao_curso = dados_curso.get('descricao')
 
-        if not dados_curso.get('nome') or not dados_curso.get('descricao'):
+        if not nome_curso or not descricao_curso:
             return 'Dados incompletos', 400
 
-        if self.pega_curso_nome(dados_curso.get('nome')):
+        if self.pega_curso_nome(nome_curso):
             return 'Curso já cadastrado', 422
 
         db.execute(
             'INSERT INTO Curso (nome, descricao) VALUES (?, ?)',
-            (dados_curso.get('nome'), dados_curso.get('descricao'))
+            (nome_curso, descricao_curso)
         )
         db.commit()
 
@@ -52,20 +54,21 @@ class Curso:
 
     def atualiza_curso(self, curso_id, dados_curso):
         db = get_db()
+        nome_curso = dados_curso.get('nome')
+        descricao_curso = dados_curso.get('descricao')
 
         if not self.pega_curso_id(curso_id):
             return 'Curso não existente', 404
 
-        if not dados_curso.get('nome') or not dados_curso.get('descricao'):
+        if not nome_curso or not descricao_curso:
             return 'Dados incompletos', 400
 
-        if self.pega_curso_nome(dados_curso.get('nome')):
+        if self.pega_curso_nome(nome_curso):
             return 'Curso já cadastrado', 422
 
         db.execute(
-            'UPDATE Curso set nome = ?, descricao = ?'
-            ' WHERE id = ?',
-            (dados_curso.get('nome'), dados_curso.get('descricao'), curso_id)
+            'UPDATE Curso set nome = ?, descricao = ? WHERE id = ?',
+            (nome_curso, descricao_curso, curso_id)
         )
         db.commit()
         curso_atualizado = self.pega_curso_id(curso_id)

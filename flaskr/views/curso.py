@@ -7,8 +7,8 @@ bp_curso = Blueprint('curso', __name__, url_prefix='/curso')
 
 @bp_curso.route('/criar', methods=['POST'])
 def cria_curso():
-    data = request.json
-    resposta = Curso().cria_curso(data)
+    dados = request.json
+    resposta = Curso().cria_curso(dados)
 
     return resposta
 
@@ -34,16 +34,18 @@ def lista_cursos():
 
     limit = per_page
     offset = (page - 1)*per_page
+    cursos = Curso().lista_cursos(limit, offset)
 
-    return Curso().lista_cursos(limit, offset)
+    return cursos
 
 
 @bp_curso.route('/<int:curso_id>', methods=['PUT'])
 def atualiza_curso(curso_id):
-    data = request.json
-    curso_atualizado = Curso().atualiza_curso(curso_id, data)
+    dados = request.json
+    curso_atualizado = Curso().atualiza_curso(curso_id, dados)
 
     return curso_atualizado
+
 
 @bp_curso.route('/<int:curso_id>', methods=['DELETE'])
 def deleta_curso(curso_id):
