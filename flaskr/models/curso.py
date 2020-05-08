@@ -1,4 +1,3 @@
-from flask import jsonify
 from flaskr.db import get_db
 
 
@@ -25,24 +24,12 @@ class Curso:
             f'SELECT * FROM Curso LIMIT {offset}, {limit}'
         ).fetchall()
 
-        return jsonify(list(map(
-            lambda curso: {
-                "id": curso['id'],
-                "nome": curso['nome'],
-                "descricao": curso['descricao']
-            }, lista_cursos
-        )))
+        return lista_cursos
 
     def cria_curso(self, dados_curso: dict):
         db = get_db()
         nome_curso = dados_curso.get('nome')
         descricao_curso = dados_curso.get('descricao')
-
-        if not nome_curso or not descricao_curso:
-            return 'Dados incompletos', 400
-
-        if self.pega_curso_nome(nome_curso):
-            return 'Curso já cadastrado', 422
 
         db.execute(
             'INSERT INTO Curso (nome, descricao) VALUES (?, ?)',
@@ -50,21 +37,12 @@ class Curso:
         )
         db.commit()
 
-        return dados_curso, 201
+        return dados_curso
 
     def atualiza_curso(self, curso_id, dados_curso):
         db = get_db()
         nome_curso = dados_curso.get('nome')
         descricao_curso = dados_curso.get('descricao')
-
-        if not self.pega_curso_id(curso_id):
-            return 'Curso não existente', 404
-
-        if not nome_curso or not descricao_curso:
-            return 'Dados incompletos', 400
-
-        if self.pega_curso_nome(nome_curso):
-            return 'Curso já cadastrado', 422
 
         db.execute(
             'UPDATE Curso set nome = ?, descricao = ? WHERE id = ?',
@@ -73,18 +51,11 @@ class Curso:
         db.commit()
         curso_atualizado = self.pega_curso_id(curso_id)
 
-        return {
-            'id': curso_atualizado['id'],
-            'nome': curso_atualizado['nome'],
-            'descricao': curso_atualizado['descricao']
-        }
+        return curso_atualizado
 
     def deleta_curso(self, curso_id):
-        if not self.pega_curso_id(curso_id):
-            return 'Curso não existente', 404
-
         db = get_db()
         db.execute('DELETE FROM Curso WHERE id = ?', (curso_id,))
         db.commit()
 
-        return 'Curso deletado', 200
+        return 'Curso deletado'
