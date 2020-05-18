@@ -26,7 +26,7 @@ def pega_matricula(matricula_id):
     if not matricula:
         return '', 204
 
-    return MatriculaSerializer().serialize_matricula(matricula)
+    return MatriculaSerializer().serialize(matricula)
 
 
 @bp_matricula.route('/', methods=['GET'])
@@ -39,7 +39,7 @@ def lista_matricula():
     offset = (page - 1) * per_page
     matriculas = Matricula().lista_matricula(limit, offset)
 
-    return MatriculaSerializer().serialize_lista_matriculas(matriculas)
+    return MatriculaSerializer().serialize(matriculas)
 
 
 @bp_matricula.route('/<int:matricula_id>', methods=['PUT'])
@@ -57,7 +57,7 @@ def atualiza_matricula(matricula_id):
 
     matricula_atualizada = Matricula.atualiza_matricula(matricula_id, dados)
 
-    return MatriculaSerializer().serialize_matricula(matricula_atualizada)
+    return MatriculaSerializer().serialize(matricula_atualizada)
 
 
 @bp_matricula.route('/<int:matricula_id>', methods=['DELETE'])

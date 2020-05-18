@@ -17,3 +17,9 @@ class TurmaSerializer:
                 "curso_id": turma['curso_id']
             }, turmas
         )))
+
+    def serialize(self, turmas):
+        if isinstance(turmas, list):
+            return self.serialize_lista_turmas(turmas)
+        else:
+            return self.serialize_turma(turmas)

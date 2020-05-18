@@ -58,3 +58,14 @@ class Turma:
         db.commit()
 
         return 'Turma deletada'
+
+    def matriculas_turma(self, turma_id):
+        db = get_db()
+        list_matriculas = db.execute(
+            'SELECT * FROM Matricula m JOIN'
+            ' Turma t ON m.turma_id = t.id'
+            ' WHERE t.id = ?',
+            (turma_id,)
+        ).fetchall()
+
+        return list_matriculas

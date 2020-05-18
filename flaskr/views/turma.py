@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 
 from flaskr.models import Turma, Curso
-from flaskr.serializers import TurmaSerializer
+from flaskr.serializers import TurmaSerializer, MatriculaSerializer
 
 bp_turma = Blueprint('turma', __name__, url_prefix='/turma')
 
 
-@bp_turma.route('/criar/', methods=['POST'])
+@bp_turma.route('/criar', methods=['POST'])
 def cria_turma():
     dados = request.json
 
@@ -30,7 +30,7 @@ def pega_turma(turma_id):
     if not turma:
         return '', 204
 
-    return TurmaSerializer().serialize_turma(turma)
+    return TurmaSerializer().serialize(turma)
 
 
 @bp_turma.route('/', methods=['GET'])
@@ -43,7 +43,7 @@ def lista_turmas():
     offset = (page - 1)*per_page
     turmas = Turma().lista_turma(limit, offset)
 
-    return TurmaSerializer().serialize_lista_turmas(turmas)
+    return TurmaSerializer().serialize(turmas)
 
 
 @bp_turma.route('/<int:turma_id>', methods=['PUT'])
@@ -61,7 +61,7 @@ def atualiza_turma(turma_id):
 
     turma_atualizada = Turma().atualiza_turma(turma_id, dados)
 
-    return TurmaSerializer().serialize_turma(turma_atualizada)
+    return TurmaSerializer().serialize(turma_atualizada)
 
 
 @bp_turma.route('/<int:turma_id>', methods=['DELETE'])
@@ -70,3 +70,10 @@ def deleta_turma(turma_id):
         return 'Turma não existe!', 404
 
     return Turma().deleta_turma(turma_id), 200
+
+
+@bp_turma.route('/<int:turma_id>/matriculas', methods=['GET'])
+def matriculas_turma(turma_id):
+    matriculas = Turma().matriculas_turma(turma_id)
+
+    return MatriculaSerializer().serialize(matriculas)

@@ -28,5 +28,7 @@ def create_app(test_config=None):
     db.init_app(app)
     from .views import bp_curso, bp_turma, bp_matricula
     app.register_blueprint(bp_curso)
+    app.register_blueprint(bp_turma)
+    app.register_blueprint(bp_matricula)
 
     return app

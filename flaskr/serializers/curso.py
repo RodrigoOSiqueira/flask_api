@@ -17,3 +17,9 @@ class CursoSerializer:
                 "descricao": curso['descricao']
             }, cursos
         )))
+
+    def serialize(self, cursos):
+        if isinstance(cursos, list):
+            return self.serialize_lista_cursos(cursos)
+        else:
+            return self.serialize_curso(cursos)

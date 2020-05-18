@@ -17,3 +17,9 @@ class MatriculaSerializer:
                 "turma_id": matricula['turma_id']
             }, matriculas
         )))
+
+    def serialize(self, matriculas):
+        if isinstance(matriculas, list):
+            return self.serialize_lista_matriculas(matriculas)
+        else:
+            return self.serialize_matricula(matriculas)

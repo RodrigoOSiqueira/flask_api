@@ -18,7 +18,7 @@ def cria_curso():
 
     novo_curso = Curso().cria_curso(dados)
 
-    return novo_curso, 401
+    return novo_curso, 201
 
 
 @bp_curso.route('/<int:curso_id>', methods=['GET'])
@@ -27,7 +27,7 @@ def pega_curso(curso_id):
     if not curso:
         return '', 204
 
-    return CursoSerializer().serialize_curso(curso)
+    return CursoSerializer().serialize(curso)
 
 
 @bp_curso.route('/', methods=['GET'])
@@ -40,7 +40,7 @@ def lista_cursos():
     offset = (page - 1)*per_page
     cursos = Curso().lista_cursos(limit, offset)
 
-    return CursoSerializer().serialize_lista_cursos(cursos)
+    return CursoSerializer().serialize(cursos)
 
 
 @bp_curso.route('/<int:curso_id>', methods=['PUT'])
@@ -58,7 +58,7 @@ def atualiza_curso(curso_id):
 
     curso_atualizado = Curso().atualiza_curso(curso_id, dados)
 
-    return CursoSerializer().serialize_curso(curso_atualizado)
+    return CursoSerializer().serialize(curso_atualizado)
 
 
 @bp_curso.route('/<int:curso_id>', methods=['DELETE'])

@@ -1,4 +1,3 @@
-from flask import jsonify
 from flaskr.db import get_db
 
 
@@ -33,7 +32,7 @@ class Matricula:
         turma_id = dados_matricula.get('turma_id')
 
         db.execute(
-            'INSERT INTO Matricula (nome, turma_id) VALUES (?, ?)',
+            'INSERT INTO Matricula (nome_aluno, turma_id) VALUES (?, ?)',
             (nome_aluno, turma_id)
         )
         db.commit()
