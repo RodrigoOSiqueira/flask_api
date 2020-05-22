@@ -10,26 +10,17 @@ class Matricula:
 
         return matricula
 
-    def pega_matricula_aluno(self, nome_aluno: str):
+    def verifica_matricula_turma(self, turma_id: int, matricula_id: int):
         db = get_db()
         matricula = db.execute(
-            'SELECT * FROM Matricula WHERE nome_aluno = ?', (nome_aluno, )
+            'SELECT * FROM Matricula WHERE id = ? AND turma_id = ?',
+            (matricula_id, turma_id,)
         ).fetchone()
 
         return matricula
 
-    def lista_matricula(self, limit, offset):
+    def cria_matricula(self, turma_id: int, nome_aluno: str):
         db = get_db()
-        lista_matriculas = db.execute(
-            f'SELECT * FROM Matricula LIMIT {offset}, {limit}'
-        ).fetchall()
-
-        return lista_matriculas
-
-    def cria_matricula(self, dados_matricula: dict):
-        db = get_db()
-        nome_aluno = dados_matricula.get('nome_aluno')
-        turma_id = dados_matricula.get('turma_id')
 
         db.execute(
             'INSERT INTO Matricula (nome_aluno, turma_id) VALUES (?, ?)',
@@ -37,11 +28,13 @@ class Matricula:
         )
         db.commit()
 
-        return dados_matricula
+        return {
+            "nome_aluno": nome_aluno,
+            "turma_id": turma_id
+        }
 
-    def atualiza_matricula(self, matricula_id: id, dados_matricula: dict):
+    def atualiza_matricula(self, matricula_id: id, nome_aluno: str):
         db = get_db()
-        nome_aluno = dados_matricula.get('nome')
 
         db.execute(
             'UPDATE Matricula set nome_aluno = ? WHERE id = ?',
